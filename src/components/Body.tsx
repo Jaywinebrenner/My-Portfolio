@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
 
-
 interface ForecastData {
     current: {
         relative_humidity_2m: number;
@@ -12,9 +11,9 @@ interface ForecastData {
 }
 
 const Body = () => {
-    const [currentDate, setCurrentDate] = useState('');
+    const [currentDate, setCurrentDate] = useState<string>('');
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
-    const [catData, setCatData] = useState(null)
+    const [catData, setCatData] = useState<string | null>(null);
 
     const latitude = '45.5234';
     const longitude = '-122.6762';
@@ -55,49 +54,47 @@ const Body = () => {
         const formattedDate = `
         <h2>It's ${dayOfWeek},</h2>
         <h2>${month} ${year}</h2>
-        <h2>at ${time}</h2>`
+        <h2>at ${time}</h2>`;
         
-        setCurrentDate(`${formattedDate}`);
+        setCurrentDate(formattedDate);
     }, []);
 
-        useEffect(()=> {
-            const fetchCatFact = async () => {
-                try {
-                    const response = await fetch('https://meowfacts.herokuapp.com/');
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch cat facts');
-                    }
-                    const data = await response.json();
-                    console.log("cat data", data)
-                    setCatData(data.data)
-                    return data.data; 
-                } catch (error) {
-                    console.error('Error fetching cat facts:', error);
-                    return null;
+    useEffect(() => {
+        const fetchCatFact = async () => {
+            try {
+                const response = await fetch('https://meowfacts.herokuapp.com/');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch cat facts');
                 }
-            };
-            fetchCatFact();
-        },[])
+                const data = await response.json();
+                console.log("cat data", data);
+                setCatData(data.data);
+            } catch (error) {
+                console.error('Error fetching cat facts:', error);
+                setCatData(null);
+            }
+        };
+        fetchCatFact();
+    }, []);
 
     const CtoF = () => {
         if (forecastData && forecastData.current && forecastData.current.temperature_2m !== undefined) {
             return Math.floor((forecastData.current.temperature_2m * 9/5) + 32);
         } else {
-            return "Unknown Temperature!"
+            return "Unknown Temperature!";
         }
     };
     
     return (
         <section className="bodyflex items-center justify-center h-screen">
             <div className="grid grid-cols-2 md:grid-cols-2 gap-4 card-wrapper">
-                <Card label={'one'}>
-                {
-                            currentDate ? 
-                            <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
-                            : 
-                            <p>...Loading</p>
-                        }
-
+                <Card label={'one'} style={{ backgroundColor: currentDate.includes('one') ? 'white' : 'gray' }}>
+                    {
+                        currentDate ? 
+                        <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
+                        : 
+                        <p>...Loading</p>
+                    }
                 </Card>
                 <Card label={'two'}>
                     <h4 className="text-xl font-semibold mb-2">About me</h4>
