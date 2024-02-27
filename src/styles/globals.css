@@ -63,6 +63,7 @@ p {
 
 .card-wrapper {
     padding: 0 20%;
+    gap: 32px;
 }
 
 .header {
@@ -76,6 +77,8 @@ p {
         padding: 5%;
     }
 }
+
+
 .card-one {
     display: flex;
     align-items: center;
@@ -88,7 +91,6 @@ p {
 }
 
 .card-two, .card-three, .card-four {
-    background-color: lightgray;
     display: flex;
     flex-direction: column;
     justify-content: center;

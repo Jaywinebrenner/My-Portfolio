@@ -3,15 +3,15 @@ import React, { CSSProperties } from 'react';
 interface CardProps {
     label: string;
     children?: React.ReactNode;
-    style?: CSSProperties; // Define the style prop
+    style?: CSSProperties; 
 }
 
 const Card: React.FC<CardProps> = ({ label, children, style }) => {
     return (
         <section
             style={{
-                backgroundColor: label === 'one' ? 'white' : 'lightgray',
-                boxShadow: label === 'one' ? 'none' : 'lightgray',
+                backgroundColor: label === 'one' ? 'white' : '#EEEEEE',
+                boxShadow: label === 'one' ? 'none' : '#EEEEEE',
                 height: "300px",
                 paddingLeft: label === 'one' ? '0' : '',
                 ...style, 

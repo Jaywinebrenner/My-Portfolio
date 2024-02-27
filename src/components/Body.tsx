@@ -10,6 +10,10 @@ interface ForecastData {
     }
 }
 
+interface CatFactResponse {
+    data: string[]; 
+}
+
 const Body = () => {
     const [currentDate, setCurrentDate] = useState<string>('');
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
@@ -27,14 +31,15 @@ const Body = () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
-
+    
             const data = await response.json() as ForecastData;
-
+    
             setForecastData(data);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching forecast data:', error);
         }
     };
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,8 +50,37 @@ const Body = () => {
             }
         };
         
-        fetchData();
+        fetchData().catch(error => {
+            console.error('Error in fetchData:', error);
+        });
     }, []);
+    
+    
+    
+    useEffect(() => {
+        const fetchCatFact = async () => {
+            try {
+                const response = await fetch('https://meowfacts.herokuapp.com/');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch cat facts');
+                }
+                const responseData: CatFactResponse = await response.json() as CatFactResponse;
+
+                if (Array.isArray(responseData.data) && responseData.data.length > 0) {
+                    setCatData(responseData.data[0] ?? null);
+                } else {
+                    setCatData(null);
+                }
+                
+            } catch (error) {
+                console.error('Error fetching cat facts:', error);
+                setCatData(null);
+            }
+        };
+    
+        void fetchCatFact();
+    }, []);
+    
 
     useEffect(() => {
         const date = new Date().toLocaleString('en-US', {
@@ -68,37 +102,23 @@ const Body = () => {
         
         setCurrentDate(formattedDate);
     }, []);
-
-    useEffect(() => {
-        const fetchCatFact = async () => {
-            try {
-                const response = await fetch('https://meowfacts.herokuapp.com/');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch cat facts');
-                }
-                const data = await response.json();
-                console.log("cat data", data);
-                setCatData(data.data);
-            } catch (error) {
-                console.error('Error fetching cat facts:', error);
-                setCatData(null);
-            }
-        };
-        fetchCatFact();
-    }, []);
+    
+    
 
     const CtoF = () => {
-        if (forecastData && forecastData.current && forecastData.current.temperature_2m !== undefined) {
-            return Math.floor((forecastData.current.temperature_2m * 9/5) + 32);
+        const temperature_2m = forecastData?.current?.temperature_2m;
+        if (temperature_2m !== undefined) {
+            return Math.floor((temperature_2m * 9/5) + 32);
         } else {
             return "Unknown Temperature!";
         }
     };
     
+    
     return (
         <section className="bodyflex items-center justify-center h-screen">
             <div className="grid grid-cols-2 md:grid-cols-2 gap-4 card-wrapper">
-                <Card label={'one'} style={{ backgroundColor: currentDate.includes('one') ? 'white' : 'gray' }}>
+                <Card label={'one'}>
                     {
                         currentDate ? 
                         <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
