@@ -3,7 +3,7 @@ import React from 'react';
 
 type HeaderProps = {};
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC = () => {
     return (
         <section className="header flex justify-between items-center p-4">
             <div >

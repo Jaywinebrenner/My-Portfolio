@@ -19,26 +19,36 @@ const Body = () => {
     const longitude = '-122.6762';
     const currentParams = 'temperature_2m,wind_speed_10m,relative_humidity_2m';
 
+    const fetchForecastData = async () => {
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=${currentParams}`;
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const data = await response.json() as ForecastData;
+
+            setForecastData(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchForecastData = async () => {
+        const fetchData = async () => {
             try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=${currentParams}`;
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-    
-                const data = await response.json();
-                console.log('Fetched data:', data);
-                setForecastData(data);
+                await fetchForecastData();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-    
-        fetchForecastData();
+        
+        fetchData();
+    }, []);
 
+    useEffect(() => {
         const date = new Date().toLocaleString('en-US', {
             weekday: 'long',
             month: 'short',
@@ -104,8 +114,8 @@ const Body = () => {
                 <Card label={'three'}>
                     {forecastData ? <p>Portland, Oregon</p> : <p>... Loading</p>}
                     {forecastData && <h2 className="text-xl font-semibold mb-2"  style={{padding: "12px 0"}}>{CtoF()}°</h2> }
-                    {forecastData && <p>Wind Speed: {forecastData?.current.wind_speed_10m}km/h</p>}
-                    {forecastData && <p>Humidity: {forecastData?.current.relative_humidity_2m}%</p>}
+                    {forecastData && <p>Wind Speed: {forecastData.current?.wind_speed_10m}km/h</p>}
+                    {forecastData && <p>Humidity: {forecastData.current?.relative_humidity_2m}%</p>}
                 </Card>
                 <Card label={'four'}>
                     {catData ? <h4 className="text-xl font-semibold mb-2">Cat Fact</h4> : null}
