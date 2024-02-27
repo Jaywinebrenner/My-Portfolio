@@ -88,64 +88,34 @@ const Body = () => {
     };
     
     return (
-        <>
         <section className="bodyflex items-center justify-center h-screen">
             <div className="grid grid-cols-2 md:grid-cols-2 gap-4 card-wrapper">
-                <div className="card-one p-8" style={{ height: '300px', padding: '0' }}>
-                    {
-                        currentDate ? 
-                        <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
-                        : 
-                        <p>...Loading</p>
-                    }
-                </div>
-                <div className="bg-gray rounded-lg shadow-md p-8 card-two card " style={{ height: '300px' }}>
+                <Card label={'one'}>
+                {
+                            currentDate ? 
+                            <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
+                            : 
+                            <p>...Loading</p>
+                        }
+
+                </Card>
+                <Card label={'two'}>
                     <h4 className="text-xl font-semibold mb-2">About me</h4>
                     <p>I enjoy music🎵, Chicken Tikka Masala🥣, movies🎞️ and coding👨‍💻. </p>
                     <p>My favorite dev tools are NextJs, React, Vanilla JavaScript and Ruby.</p>
-                </div>
-                <div className="bg-gray rounded-lg shadow-md p-8 card-three" style={{ height: '300px' }}>
+                </Card>
+                <Card label={'three'}>
                     {forecastData ? <p>Portland, Oregon</p> : <p>... Loading</p>}
                     {forecastData && <h2 className="text-xl font-semibold mb-2"  style={{padding: "12px 0"}}>{CtoF()}°</h2> }
                     {forecastData && <p>Wind Speed: {forecastData?.current.wind_speed_10m}km/h</p>}
                     {forecastData && <p>Humidity: {forecastData?.current.relative_humidity_2m}%</p>}
-                </div>
-                <div className="bg-gray rounded-lg shadow-md p-8 card-four" style={{ height: '300px' }}>
+                </Card>
+                <Card label={'four'}>
                     {catData ? <h4 className="text-xl font-semibold mb-2">Cat Fact</h4> : null}
                     {catData ? <p>{catData}</p> : <p>...Loading Cat Data</p>}
-                </div>
+                </Card>
             </div>
         </section>
-
-    <section className="bodyflex items-center justify-center h-screen">
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 card-wrapper">
-            <Card label={'one'}>
-            {
-                        currentDate ? 
-                        <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
-                        : 
-                        <p>...Loading</p>
-                    }
-
-            </Card>
-            <Card label={'two'}>
-                <h4 className="text-xl font-semibold mb-2">About me</h4>
-                <p>I enjoy music🎵, Chicken Tikka Masala🥣, movies🎞️ and coding👨‍💻. </p>
-                <p>My favorite dev tools are NextJs, React, Vanilla JavaScript and Ruby.</p>
-            </Card>
-            <Card label={'three'}>
-                {forecastData ? <p>Portland, Oregon</p> : <p>... Loading</p>}
-                {forecastData && <h2 className="text-xl font-semibold mb-2"  style={{padding: "12px 0"}}>{CtoF()}°</h2> }
-                {forecastData && <p>Wind Speed: {forecastData?.current.wind_speed_10m}km/h</p>}
-                {forecastData && <p>Humidity: {forecastData?.current.relative_humidity_2m}%</p>}
-            </Card>
-            <Card label={'four'}>
-                {catData ? <h4 className="text-xl font-semibold mb-2">Cat Fact</h4> : null}
-                {catData ? <p>{catData}</p> : <p>...Loading Cat Data</p>}
-            </Card>
-        </div>
-    </section>
-    </>
     );
 };
 
