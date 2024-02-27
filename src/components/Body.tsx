@@ -12,6 +12,7 @@ interface ForecastData {
 const Body = () => {
     const [currentDate, setCurrentDate] = useState('');
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
+    const [catData, setCatData] = useState(null)
 
     const latitude = '45.5234';
     const longitude = '-122.6762';
@@ -49,10 +50,33 @@ const Body = () => {
           
         const parts = date.split(/,\s*/); 
         const [dayOfWeek, month, year, time] = parts;
-        const formattedDate = `It's ${dayOfWeek}, ${month} ${year} at ${time} `;
+        // const formattedDate = `It's ${dayOfWeek}, ${month} ${year} at ${time} `;
+        const formattedDate = `
+        <h2>It's ${dayOfWeek},</h2>
+        <h2>${month} ${year}</h2>
+        <h2>at ${time}</h2>`
         
         setCurrentDate(`${formattedDate}`);
     }, []);
+
+        useEffect(()=> {
+            const fetchCatFact = async () => {
+                try {
+                    const response = await fetch('https://meowfacts.herokuapp.com/');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch cat facts');
+                    }
+                    const data = await response.json();
+                    console.log("cat data", data)
+                    setCatData(data.data)
+                    return data.data; 
+                } catch (error) {
+                    console.error('Error fetching cat facts:', error);
+                    return null;
+                }
+            };
+            fetchCatFact();
+        },[])
 
     const CtoF = () => {
         if (forecastData && forecastData.current && forecastData.current.temperature_2m !== undefined) {
@@ -67,22 +91,29 @@ const Body = () => {
         <section className="bodyflex items-center justify-center h-screen">
             <div className="grid grid-cols-2 md:grid-cols-2 gap-4 card-wrapper">
                 <div className="card-one p-8" style={{ height: '300px', padding: '0' }}>
-                    {currentDate ? <h2 className="text-xl font-semibold mb-2">{currentDate}</h2>: <p>...Loading</p>}
+                    {
+                        currentDate ? 
+                        <h2 className="text-xl font-semibold mb-2" dangerouslySetInnerHTML={{ __html: currentDate }} />
+
+                        
+                        : 
+                        <p>...Loading</p>
+                    }
                 </div>
                 <div className="bg-gray rounded-lg shadow-md p-8 card-two " style={{ height: '300px' }}>
                     <h4 className="text-xl font-semibold mb-2">About me</h4>
-                    <p className="text-gray-600">I enjoy music🎵, Chicken Tikka Masala🥣, movies🎞️ and coding👨‍💻. </p>
+                    <p>I enjoy music🎵, Chicken Tikka Masala🥣, movies🎞️ and coding👨‍💻. </p>
                     <p>My favorite dev tools are NextJs, React, Vanilla JavaScript and Ruby.</p>
                 </div>
                 <div className="bg-gray rounded-lg shadow-md p-8 card-three" style={{ height: '300px' }}>
                     {forecastData ? <p>Portland, Oregon</p> : <p>... Loading</p>}
-                    {forecastData && <h2 className="text-xl font-semibold mb-2">{CtoF()}°</h2> }
+                    {forecastData && <h2 className="text-xl font-semibold mb-2"  style={{padding: "12px 0"}}>{CtoF()}°</h2> }
                     {forecastData && <p>Wind Speed: {forecastData?.current.wind_speed_10m}km/h</p>}
                     {forecastData && <p>Humidity: {forecastData?.current.relative_humidity_2m}%</p>}
                 </div>
                 <div className="bg-gray rounded-lg shadow-md p-8 card-four" style={{ height: '300px' }}>
-                    <h4 className="text-xl font-semibold mb-2">Rabbit Fact</h4>
-                    <p className="text-gray-600">Rabbits use different sounds such as grunts, purrs, and thumps to convey messages to other rabbits and even to their human companions. This complex communication system helps rabbits socialize, establish hierarchy within their groups, and express their emotions effectively.</p>
+                    {catData ? <h4 className="text-xl font-semibold mb-2">Cat Fact</h4> : null}
+                    {catData ? <p>{catData}</p> : <p>...Loading Cat Data</p>}
                 </div>
             </div>
         </section>
