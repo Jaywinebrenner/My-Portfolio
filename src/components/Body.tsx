@@ -1,17 +1,15 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 
-
 interface ForecastData {
     current: {
         relative_humidity_2m: number;
         wind_speed_10m: number;
         temperature_2m: number;
     }
-
 }
 
-const Body = ( ) => {
+const Body = () => {
     const [currentDate, setCurrentDate] = useState('');
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
 
@@ -38,32 +36,32 @@ const Body = ( ) => {
         };
     
         fetchForecastData();
+
+        const date = new Date().toLocaleString('en-US', {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+        
+        const [dayOfWeek, month, day, year, time] = date.split(', ');
+        setCurrentDate(`It's ${dayOfWeek}, ${month} ${day}, ${year}, at ${time}`);
+        
+        console.log("date", date)
+        setCurrentDate(`It's ${date}, at`);
     }, []);
 
     const CtoF = () => {
-        return Math.floor((forecastData?.current.temperature_2m * 9/5) + 32);
-    }
+        if (forecastData && forecastData.current && forecastData.current.temperature_2m !== undefined) {
+            return Math.floor((forecastData.current.temperature_2m * 9/5) + 32);
+        } else {
+            return "Unknown Temperature!"
+        }
+    };
     
-    
-
-    console.log("forcast data", forecastData)
-
-    useEffect(() => {
-        const fetchCurrentDate = () => {
-            const date = new Date().toLocaleString('en-US', {
-                weekday: 'long',
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            });
-            setCurrentDate(date);
-        };
-
-        fetchCurrentDate();
-    }, []);
 
     return (
         <section className="bodyflex items-center justify-center h-screen">
