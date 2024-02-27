@@ -1,3 +1,96 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; 
+}
+
+.circle {
+    width: 24px; 
+    height: 24px; 
+    border-radius: 50%;
+    background-color: #DFE0E0;
+    position: relative;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.body {
+    grid-template-columns: 1fr 1fr;
+
+}
+
+h3, h2 {
+    font-size: 40px!important;
+    color: #000000;
+    padding: 12px 0;
+}
+h6 {
+    font-size: 16px;
+}
+
+
+h4 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+p {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+@media(max-width: 1200px){
+    p {
+        font-size: .8rem;
+    }
+}
+
+
+.card-wrapper {
+    padding: 0 20%;
+}
+
+.header {
+    height: 80px;
+    margin-bottom: 80px;
+}
+
+@media(max-width: 800px){
+    .card-wrapper {
+        grid-template-columns: 1fr!important;
+        padding: 5%;
+    }
+}
+.card-one {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10%;
+}
+.card-one h2 {
+    font-size: 40px;
+    line-height: 1;;
+    color: #000000;
+}
+
+.card-two, .card-three, .card-four {
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
