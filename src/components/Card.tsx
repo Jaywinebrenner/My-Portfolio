@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 interface CardProps {
     label: string;
     children?: React.ReactNode;
+    style?: CSSProperties; // Define the style prop
 }
 
-const Card: React.FC<CardProps> = ({ label, children }) => {
+const Card: React.FC<CardProps> = ({ label, children, style }) => {
     return (
         <section
             style={{
@@ -13,6 +14,7 @@ const Card: React.FC<CardProps> = ({ label, children }) => {
                 boxShadow: label === 'one' ? 'none' : 'lightgray',
                 height: "300px",
                 paddingLeft: label === 'one' ? '0' : '',
+                ...style, 
             }}
             className="bg-gray rounded-lg shadow-md p-8 card-four"
         >
