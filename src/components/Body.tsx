@@ -46,12 +46,12 @@ const Body = () => {
             minute: 'numeric',
             hour12: true
         });
+          
+        const parts = date.split(/,\s*/); 
+        const [dayOfWeek, month, year, time] = parts;
+        const formattedDate = `It's ${dayOfWeek}, ${month} ${year} at ${time} `;
         
-        const [dayOfWeek, month, day, year, time] = date.split(', ');
-        setCurrentDate(`It's ${dayOfWeek}, ${month} ${day}, ${year}, at ${time}`);
-        
-        console.log("date", date)
-        setCurrentDate(`It's ${date}, at`);
+        setCurrentDate(`${formattedDate}`);
     }, []);
 
     const CtoF = () => {
