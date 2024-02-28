@@ -134,7 +134,7 @@ const Body = () => {
                 <Card label={'three'}>
                     {forecastData ? <p>Portland, Oregon</p> : <p>... Loading</p>}
                     {forecastData && <h2 className="text-xl font-semibold mb-2"  style={{padding: "12px 0"}}>{CtoF()}°</h2> }
-                    {forecastData && <p>Wind Speed: {forecastData.current?.wind_speed_10m}km/h</p>}
+                    {forecastData && <p>Wind Speed: {forecastData.current?.wind_speed_10m} km/h</p>}
                     {forecastData && <p>Humidity: {forecastData.current?.relative_humidity_2m}%</p>}
                 </Card>
                 <Card label={'four'}>
